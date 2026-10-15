@@ -1,0 +1,24 @@
+#categoryPhotosManager{border:1px solid #d5dfd9;background:#f8fbf9;border-radius:10px;padding:20px;margin-bottom:24px;scroll-margin-top:105px}
+#categoryPhotosManager h3{font-size:23px;margin:0 0 10px}#categoryPhotosManager>p{font-size:16px;line-height:1.55;margin:10px 0}
+#categoryPhotoStatus{min-height:24px;color:#285840}#categoryPhotoStatus[data-error=true]{color:#a51d26}
+.category-photo-toolbar,.category-photo-actions,.admin-section-links{display:flex;gap:9px;flex-wrap:wrap}
+#categoryPhotosManager button,.admin-section-links button,#categoryEditShortcut{border:1px solid #c8d4cd;border-radius:5px;padding:10px 14px;min-height:44px;font:inherit;font-size:14px;font-weight:700;background:#fff;color:#193c29;cursor:pointer}
+#categoryPhotosManager button:disabled{opacity:.5;cursor:wait}#categoryPhotosManager .category-save{background:#d71920;color:#fff;border-color:#d71920}
+#categoryPhotosManager button:focus-visible,.category-card-edit:focus-visible,#categoryEditShortcut:focus-visible{outline:3px solid #075cbd;outline-offset:3px}
+#categoryPhotoList{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+.category-photo-row{min-width:0;border:1px solid #dbe4df;background:#fff;border-radius:8px;padding:12px;scroll-margin-top:115px}
+.category-preview{height:145px;display:flex;align-items:center;justify-content:center;background:#f1f4f6;border-radius:5px;overflow:hidden}
+.category-preview img{width:100%;height:100%;object-fit:contain}.category-preview>span{font-size:65px}
+.category-photo-info h4{font-size:18px;margin:13px 0 7px}.category-photo-info p{font-size:14px;line-height:1.5;color:#54625b;margin:0 0 12px}
+.admin-section-links{margin:0 0 20px;padding-bottom:16px;border-bottom:1px solid #ddd;position:relative}
+#categoryEditShortcut{display:block;margin:0 auto 18px;background:#d71920;color:#fff;border-color:#d71920}#categoryEditShortcut[hidden]{display:none}
+.cc .category-card-edit{position:absolute;top:auto;bottom:66px;left:50%;right:auto;transform:translateX(-50%);z-index:3;padding:8px 10px;background:#fff;color:#1d3528;border:1px solid #bdd0c4;border-radius:4px;font-size:12px;min-height:36px;white-space:nowrap;width:auto}
+.cc .category-card-edit[hidden]{display:none}.cc:has(.category-card-edit:not([hidden])){min-height:280px}
+.cc.category-custom{display:block;background:#f1f6fa}
+.cc.category-custom>img:not(.category-custom-image),.cc.category-custom>.bikeicon{display:none}
+.cc.category-custom>.category-custom-image{display:block;width:100%;height:100%;object-fit:contain;padding:78px 10px 60px;background:#f1f6fa}
+.cc.category-custom .label{top:0;padding:14px 10px 5px;color:#193c29;-webkit-text-stroke:0;text-shadow:none;font-size:24px;line-height:1.1;letter-spacing:0}
+.cc.category-custom .label small{font-size:12px;color:#42614f;text-shadow:none;line-height:1.3}
+.cc.category-custom:has(.category-card-edit:not([hidden]))>.category-custom-image{padding-bottom:108px}
+#bannerManager,#productForm{scroll-margin-top:110px}
+@media(max-width:650px){#categoryPhotosManager{padding:14px 10px}#categoryPhotoList{grid-template-columns:1fr}.category-preview{height:190px}.admin-section-links button{flex:1 1 120px}.cc.category-custom .label{font-size:21px}.category-photo-actions button{flex:1 1 auto}}
