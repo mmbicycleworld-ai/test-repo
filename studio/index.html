@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="ta">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>MM Studio</title>
+<meta name="description" content="MM Bicycle World — free ad, slideshow and video maker for Instagram, Facebook and WhatsApp Status.">
+<meta name="theme-color" content="#d71920">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anek+Tamil:wght@500;700;800&family=Mukta+Malar:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--red:#d71920;--green:#0a6526;--ink:#16181b;--mut:#62666d;--line:#e3e5e8;--bg:#f4f5f7;--card:#fff;--chip:#eef0f2}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Mukta Malar",system-ui,sans-serif;font-size:15px}
+button,input,select,textarea{font:inherit;color:inherit}
+header{display:flex;align-items:center;gap:10px;padding:8px 16px;background:#111;color:#fff;position:sticky;top:0;z-index:20}
+header img{width:36px;height:36px}
+header h1{font-size:17px;margin:0;font-weight:800;line-height:1.1}
+header h1 small{display:block;font-weight:400;font-size:12px;opacity:.75}
+header .sp{flex:1}
+#installBtn{display:none;background:var(--red);border:0;color:#fff;border-radius:8px;padding:6px 10px;font-weight:700}
+main{max-width:1200px;margin:0 auto;padding:12px 16px 110px;display:grid;gap:14px}
+@media(min-width:900px){main{grid-template-columns:minmax(0,1fr) 420px;align-items:start}.stage{position:sticky;top:64px}}
+.stage{background:var(--card);border-radius:14px;padding:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.ratios{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--chip);border-radius:999px;padding:6px 12px;cursor:pointer;font-weight:600;white-space:nowrap}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.canvasWrap{display:flex;justify-content:center;background:#1b1d20;border-radius:10px;padding:8px}
+canvas#cv{display:block;max-width:100%;max-height:56vh;width:auto;height:auto;border-radius:4px;background:#000}
+.ctrl{display:flex;align-items:center;gap:10px;margin-top:10px}
+.ctrl button{width:44px;height:44px;border-radius:50%;border:0;background:var(--red);color:#fff;font-size:18px;cursor:pointer;flex:none}
+.ctrl input[type=range]{flex:1}
+.ctrl .tm{font-variant-numeric:tabular-nums;font-size:13px;color:var(--mut);min-width:78px;text-align:right}
+.tabs{display:flex;gap:4px;background:var(--card);border-radius:12px;padding:4px;position:sticky;top:52px;z-index:10;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+@media(min-width:900px){.tabs{top:64px}}
+.tabs button{flex:1;border:0;background:none;padding:9px 4px;border-radius:9px;font-weight:700;font-size:13.5px;cursor:pointer;color:var(--mut)}
+.tabs button.on{background:var(--red);color:#fff}
+.panel{display:none;background:var(--card);border-radius:14px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.panel.on{display:block}
+.panel h3{margin:0 0 8px;font-size:15px}
+.hint{color:var(--mut);font-size:13px;margin:4px 0 10px}
+label.f{display:block;font-size:13px;font-weight:600;color:var(--mut);margin:10px 0 4px}
+input[type=text],input[type=tel],input[type=number],textarea,select{width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 11px;background:#fff;font-size:15px}
+textarea{min-height:64px;resize:vertical}
+input[type=range]{width:100%;accent-color:var(--red)}
+.row{display:flex;gap:8px}.row>*{flex:1}
+.check{display:flex;align-items:center;gap:8px;margin:10px 0;font-weight:600}
+.check input{width:20px;height:20px;accent-color:var(--red)}
+.add{display:flex;align-items:center;justify-content:center;gap:8px;border:2px dashed #c9ccd1;border-radius:12px;padding:16px;cursor:pointer;font-weight:800;color:var(--red);background:#fff8f8}
+.clips{display:flex;gap:8px;overflow-x:auto;padding:10px 2px 6px}
+.clip{position:relative;flex:none;width:76px;height:96px;border-radius:9px;overflow:hidden;border:3px solid transparent;cursor:pointer;background:#222}
+.clip.on{border-color:var(--red)}
+.clip img,.clip video{width:100%;height:100%;object-fit:cover;pointer-events:none}
+.clip span{position:absolute;left:0;right:0;bottom:0;background:rgba(0,0,0,.65);color:#fff;font-size:11px;text-align:center;padding:1px}
+.clip b{position:absolute;top:2px;left:4px;color:#fff;font-size:12px;text-shadow:0 1px 2px #000}
+.box{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:8px}
+.btns{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.btn{border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px 12px;cursor:pointer;font-weight:700}
+.btn.red{background:var(--red);border-color:var(--red);color:#fff}
+.btn.green{background:var(--green);border-color:var(--green);color:#fff}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips .chip{font-size:13px;padding:5px 10px}
+.tpls{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
+.tpl{border:2px solid var(--line);border-radius:10px;padding:10px 6px;text-align:center;cursor:pointer;font-weight:800;font-size:13px;background:#fff}
+.tpl i{display:block;font-style:normal;font-size:22px}
+.tpl.on{border-color:var(--red);background:#fff1f1}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:#fff;border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom));display:flex;gap:10px;justify-content:center}
+.bar button{flex:1;max-width:280px;border:0;border-radius:12px;padding:13px 8px;font-weight:800;font-size:15.5px;cursor:pointer}
+.bar .p{background:var(--green);color:#fff}.bar .v{background:var(--red);color:#fff}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:50;display:none;align-items:center;justify-content:center;padding:16px}
+.modal.on{display:flex}
+.sheet{background:#fff;border-radius:16px;padding:16px;width:100%;max-width:480px;max-height:92vh;overflow:auto}
+.sheet h3{margin:0 0 10px}
+.sheet video,.sheet img{width:100%;max-height:46vh;object-fit:contain;background:#111;border-radius:10px}
+.prog{height:10px;background:var(--chip);border-radius:9px;overflow:hidden;margin:12px 0}
+.prog div{height:100%;width:0;background:var(--red);transition:width .2s}
+.warn{background:#fff6dd;border:1px solid #f3d27a;border-radius:9px;padding:8px 10px;font-size:13px;margin-top:8px}
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:#111;color:#fff;padding:9px 16px;border-radius:999px;z-index:60;font-weight:600;display:none;max-width:90vw;text-align:center}
+</style>
+</head>
+<body>
+<header>
+  <img src="logo.png" alt="">
+  <h1>MM Studio<small>MM Bicycle World — விளம்பர வீடியோ மேக்கர்</small></h1>
+  <div class="sp"></div>
+  <button id="installBtn">📲 Install</button>
+</header>
+
+<main>
+  <section class="stage">
+    <div class="ratios" id="ratios">
+      <button class="chip" data-r="9:16">📱 Reels / Status</button>
+      <button class="chip" data-r="1:1">⬜ சதுரம் 1:1</button>
+      <button class="chip" data-r="4:5">📷 Post 4:5</button>
+    </div>
+    <div class="canvasWrap"><canvas id="cv"></canvas></div>
+    <div class="ctrl">
+      <button id="playBtn" aria-label="Play">▶</button>
+      <input type="range" id="seek" min="0" max="1000" value="0">
+      <span class="tm" id="tm">0.0 / 0.0s</span>
+    </div>
+  </section>
+
+  <section>
+    <nav class="tabs" id="tabs">
+      <button data-p="media" class="on">📁 மீடியா</button>
+      <button data-p="text">✍️ எழுத்து</button>
+      <button data-p="music">🎵 இசை</button>
+      <button data-p="shop">⚙️ கடை</button>
+    </nav>
+
+    <div class="panel on" id="p-media" style="margin-top:10px">
+      <label class="add">➕ போட்டோ / வீடியோ சேர்<input type="file" id="fileIn" accept="image/*,video/*" multiple hidden></label>
+      <p class="hint">பல போட்டோக்களைச் சேர்த்தால் ஸ்லைடுஷோ ஆகும். வீடியோவைச் சேர்த்தால் trim பண்ணலாம். இரண்டையும் கலந்தும் போடலாம்.</p>
+      <div class="clips" id="clips"></div>
+      <div id="clipEd"></div>
+    </div>
+
+    <div class="panel" id="p-text" style="margin-top:10px">
+      <h3>டெம்ப்ளேட்</h3>
+      <div class="tpls" id="tpls"></div>
+      <label class="f">தலைப்பு (பெரிய எழுத்து)</label>
+      <input type="text" id="headline">
+      <div class="chips" id="quick" style="margin-top:8px"></div>
+      <label class="f">துணை வரி</label>
+      <input type="text" id="sub">
+      <div class="row">
+        <div><label class="f">ஆஃபர் விலை ₹</label><input type="number" inputmode="numeric" id="price" placeholder="உதா: 4999"></div>
+        <div><label class="f">பழைய விலை ₹</label><input type="number" inputmode="numeric" id="oldPrice" placeholder="உதா: 5999"></div>
+      </div>
+      <label class="check"><input type="checkbox" id="showBrand"> கீழே கடை விவரம் (லோகோ, போன்)</label>
+      <label class="check"><input type="checkbox" id="showOutro"> கடைசியில் கடை முடிவு ஸ்க்ரீன்</label>
+      <label class="f">முடிவு ஸ்க்ரீன் வாசகம்</label>
+      <input type="text" id="outroText">
+    </div>
+
+    <div class="panel" id="p-music" style="margin-top:10px">
+      <h3>பின்னணி இசை</h3>
+      <label class="add">🎵 பாட்டு / இசை ஃபைல் தேர்வு<input type="file" id="musicIn" accept="audio/*" hidden></label>
+      <p class="hint" id="musicName">இசை எதுவும் சேர்க்கவில்லை.</p>
+      <label class="f">இசை சத்தம்</label><input type="range" id="musicVol" min="0" max="1" step="0.05">
+      <label class="f">வீடியோவின் சொந்த சத்தம்</label><input type="range" id="videoVol" min="0" max="1" step="0.05">
+      <div class="btns"><button class="btn" id="musicDel">🗑 இசையை நீக்கு</button></div>
+      <div class="warn">💡 சினிமா பாட்டு போட்டால் Instagram/Facebook சில நேரம் சத்தத்தை mute பண்ணிடும். இலவச இசைக்கு YouTube Audio Library நல்லது. அல்லது Instagram app-லேயே பாட்டு சேர்க்கலாம்.</div>
+    </div>
+
+    <div class="panel" id="p-shop" style="margin-top:10px">
+      <h3>கடை விவரம் (ஒருமுறை போட்டால் போதும், இந்த போன்ல சேமிச்சு வெச்சுக்கும்)</h3>
+      <label class="f">கடை பெயர்</label><input type="text" id="bName">
+      <label class="f">போன் / WhatsApp</label><input type="tel" id="bPhone">
+      <label class="f">முகவரி (சுருக்கமா)</label><input type="text" id="bAddr">
+      <label class="f">நேரம்</label><input type="text" id="bHours">
+      <label class="f">லோகோ</label>
+      <div class="btns">
+        <label class="btn">🖼️ புது லோகோ அப்லோட்<input type="file" id="logoIn" accept="image/*" hidden></label>
+        <button class="btn" id="logoReset">↩️ வெப்சைட் லோகோ</button>
+      </div>
+      <label class="f">வீடியோ தரம்</label>
+      <select id="quality">
+        <option value="1080">உயர் தரம் (1080p)</option>
+        <option value="720">வேகமா / பழைய போன் (720p)</option>
+      </select>
+    </div>
+  </section>
+</main>
+
+<div class="bar">
+  <button class="p" id="expPng">🖼️ போஸ்டர் சேமி</button>
+  <button class="v" id="expVid">🎬 வீடியோ சேமி</button>
+</div>
+
+<div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+(() => {
+'use strict';
+const $ = s => document.querySelector(s);
+const cv = $('#cv'), ctx = cv.getContext('2d');
+
+/* ---------- state ---------- */
+const DEF_BRAND = {name:'MM Bicycle World', phone:'9677367969', addr:'43/A, Pondy–Villupuram Main Road, திருபுவனை', hours:'தினமும் காலை 10 – இரவு 9', logo:'logo.png'};
+const S = {
+  ratio:'9:16', quality:1080, template:'new',
+  headline:'புது சைக்கிள் வந்தாச்சு!', sub:'எல்லா வயதினருக்கும் சிறந்த சைக்கிள்கள்', price:'', oldPrice:'',
+  showBrand:true, showOutro:true, outroText:'இன்றே கடைக்கு வாருங்கள்!',
+  musicVol:0.8, videoVol:1,
+  brand:{...DEF_BRAND}
+};
+const clips = [];           // {id,type,el,url,name,dur,trimIn,trimOut,srcDur,caption,fit,motion,small}
+let music = null;           // {el,url,name}
+let selId = null;
+
+const TEMPLATES = {
+  new:     {name:'புது வரவு', icon:'🚲', label:'புது வரவு • NEW ARRIVAL', a:'#d71920', b:'#0a6526', c1:'#2a0d0e', c2:'#0b1f14'},
+  offer:   {name:'ஆஃபர்',    icon:'🏷️', label:'சிறப்பு ஆஃபர் • OFFER',  a:'#ffcc00', b:'#d71920', c1:'#4a0507', c2:'#1a0203'},
+  service: {name:'சர்வீஸ்',  icon:'🔧', label:'சர்வீஸ் • SERVICE',       a:'#14a44d', b:'#0a6526', c1:'#062615', c2:'#0e1512'},
+  festival:{name:'பண்டிகை',  icon:'🪔', label:'பண்டிகை வாழ்த்துக்கள்',  a:'#ffb300', b:'#c2185b', c1:'#5a1a00', c2:'#2b0718'},
+  simple:  {name:'சிம்பிள்', icon:'✨', label:'MM BICYCLE WORLD',         a:'#ffffff', b:'#d71920', c1:'#1b1d20', c2:'#0b0c0d'}
+};
+const QUICK = ['புது சைக்கிள் வந்தாச்சு!','E-Bike இப்போ ஸ்டாக்ல!','குழந்தைகளுக்கான சைக்கிள்கள்','தீபாவளி சிறப்பு ஆஃபர்!','இனிய பொங்கல் நல்வாழ்த்துக்கள்','பள்ளி திறப்பு ஸ்பெஷல்','சைக்கிள் சர்வீஸ் இங்கே!','Gear சைக்கிள் புது மாடல்கள்','ஹெல்மெட், லைட், லாக் — எல்லாம் கிடைக்கும்'];
+
+/* ---------- storage (best effort) ---------- */
+const KEY = 'mmstudio.v1';
+function save(){ try{ const {brand,...rest}=S; localStorage.setItem(KEY, JSON.stringify({...rest,brand})); }catch(e){} }
+function load(){ try{ const j=JSON.parse(localStorage.getItem(KEY)||'null'); if(j){ Object.assign(S,j); S.brand={...DEF_BRAND,...(j.brand||{})}; } }catch(e){} }
+load();
+
+/* ---------- helpers ---------- */
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const ease=x=>1-Math.pow(1-clamp(x,0,1),3);
+const inr=v=>{ const n=Number(String(v).replace(/,/g,'')); return isFinite(n)&&n>0? n.toLocaleString('en-IN') : String(v); };
+function toast(msg,ms=2600){ const t=$('#toast'); t.textContent=msg; t.style.display='block'; clearTimeout(toast.h); toast.h=setTimeout(()=>t.style.display='none',ms); }
+function dims(){ const W=+S.quality; const r={'9:16':16/9,'1:1':1,'4:5':5/4}[S.ratio]; return [W, Math.round(W*r/2)*2]; }
+function resize(){ const [W,H]=dims(); if(cv.width!==W||cv.height!==H){ cv.width=W; cv.height=H; } }
+
+let logoImg = new Image();
+function setLogo(src){ const im=new Image(); im.onload=()=>{logoImg=im; redraw();}; im.src=src; }
+setLogo(S.brand.logo);
+
+/* downscale big photos once so every frame draws fast */
+function shrink(src, max){
+  const w=src.naturalWidth||src.videoWidth||src.width, h=src.naturalHeight||src.videoHeight||src.height;
+  const k=Math.min(1,max/Math.max(w,h)); const c=document.createElement('canvas');
+  c.width=Math.max(1,Math.round(w*k)); c.height=Math.max(1,Math.round(h*k));
+  c.getContext('2d').drawImage(src,0,0,c.width,c.height); return c;
+}
+
+/* ---------- timeline ---------- */
+const OUTRO=2.8;
+function timeline(){
+  const segs=[]; let t=0;
+  for(const c of clips){ const len = c.type==='image' ? c.dur : Math.max(0.3,c.trimOut-c.trimIn); segs.push({kind:'clip',clip:c,start:t,len}); t+=len; }
+  if(!clips.length){ segs.push({kind:'blank',start:0,len:5}); t=5; }
+  if(S.showOutro){ segs.push({kind:'outro',start:t,len:OUTRO}); t+=OUTRO; }
+  return {segs,total:t};
+}
+function segAt(tl,t){ for(const s of tl.segs) if(t < s.start+s.len) return s; return tl.segs[tl.segs.length-1]; }
+
+/* ---------- drawing ---------- */
+const small = document.createElement('canvas'); small.width=48; small.height=48; const sctx=small.getContext('2d');
+
+function drawMedia(src, sw, sh, fit, zoom, panDir){
+  const W=cv.width,H=cv.height;
+  if(fit==='contain'){
+    // blurred backdrop: draw tiny then scale up (cheap blur that works on every phone)
+    const k=Math.max(48/sw,48/sh); const bw=sw*k, bh=sh*k;
+    sctx.clearRect(0,0,48,48); sctx.drawImage(src,(48-bw)/2,(48-bh)/2,bw,bh);
+    ctx.save(); ctx.imageSmoothingEnabled=true; ctx.imageSmoothingQuality='high';
+    ctx.drawImage(small,-W*0.1,-H*0.1,W*1.2,H*1.2); ctx.fillStyle='rgba(0,0,0,.35)'; ctx.fillRect(0,0,W,H); ctx.restore();
+    const s=Math.min(W/sw,H/sh)*zoom; const dw=sw*s, dh=sh*s;
+    ctx.drawImage(src,(W-dw)/2+panDir*(zoom-1)*W*0.3,(H-dh)/2,dw,dh);
+  } else {
+    const s=Math.max(W/sw,H/sh)*zoom; const dw=sw*s, dh=sh*s;
+    ctx.drawImage(src,(W-dw)/2+panDir*(dw-W)*0.25,(H-dh)/2,dw,dh);
+  }
+}
+
+function bgGrad(T){
+  const W=cv.width,H=cv.height; const g=ctx.createLinearGradient(0,0,W,H);
+  g.addColorStop(0,T.c1); g.addColorStop(1,T.c2); ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+}
+
+function font(w,px,fam){ return `${w} ${Math.round(px)}px ${fam==='h'?'"Anek Tamil","Mukta Malar"':'"Mukta Malar","Anek Tamil"'},system-ui,sans-serif`; }
+function wrap(text,maxW){
+  const words=String(text).split(/\s+/).filter(Boolean); const lines=[]; let cur='';
+  for(const w of words){ const tryL=cur?cur+' '+w:w; if(ctx.measureText(tryL).width<=maxW||!cur) cur=tryL; else { lines.push(cur); cur=w; } }
+  if(cur) lines.push(cur); return lines;
+}
+function fit(text,maxW,maxLines,size,weight,fam){
+  let s=size, lines;
+  for(;s>size*0.4;s*=0.92){ ctx.font=font(weight,s,fam); lines=wrap(text,maxW); if(lines.length<=maxLines && lines.every(l=>ctx.measureText(l).width<=maxW)) break; }
+  ctx.font=font(weight,s,fam); return {lines:lines||[], size:s};
+}
+function rrect(x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+function circleImg(img,cx,cy,r){ ctx.save(); ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.fillStyle='#fff'; ctx.fill(); ctx.clip(); if(img.complete&&img.naturalWidth) ctx.drawImage(img,cx-r,cy-r,r*2,r*2); ctx.restore(); }
+
+function layout(){
+  const W=cv.width,H=cv.height,u=W/1080;
+  const tall=S.ratio==='9:16';
+  const top = tall? 150*u : 50*u;
+  const brandH = 150*u;
+  const brandY = H - brandH - (tall? 230*u : 30*u);
+  return {W,H,u,tall,top,brandH,brandY};
+}
+
+function drawOverlay(t, seg, T){
+  const L=layout(), {W,H,u}=L;
+  // top scrim
+  let g=ctx.createLinearGradient(0,0,0,H*0.45); g.addColorStop(0,'rgba(0,0,0,.72)'); g.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,H*0.45);
+  if(S.showBrand){ g=ctx.createLinearGradient(0,H*0.6,0,H); g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(1,'rgba(0,0,0,.55)'); ctx.fillStyle=g; ctx.fillRect(0,H*0.6,W,H*0.4); }
+
+  if(S.template==='festival') festivalFrame(T,u,W,H,t);
+
+  // headline block (slides in at start)
+  const a=ease(t/0.7); ctx.save(); ctx.globalAlpha=a; ctx.translate(0,-(1-a)*60*u);
+  let y=L.top;
+  ctx.font=font(800,34*u,'b'); const lab=T.label; const lw=ctx.measureText(lab).width+44*u;
+  ctx.fillStyle=T.a; rrect((W-lw)/2,y,lw,58*u,29*u); ctx.fill();
+  ctx.fillStyle=(S.template==='offer'||S.template==='simple'||S.template==='festival')?'#1a1a1a':'#fff'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(lab,W/2,y+30*u); y+=84*u;
+  if(S.headline){
+    const f=fit(S.headline,W-110*u,3,(L.tall?104:92)*u,800,'h');
+    ctx.textBaseline='top'; ctx.shadowColor='rgba(0,0,0,.6)'; ctx.shadowBlur=18*u; ctx.shadowOffsetY=4*u;
+    for(const l of f.lines){ ctx.lineWidth=8*u; ctx.strokeStyle='rgba(0,0,0,.35)'; ctx.strokeText(l,W/2,y); ctx.fillStyle='#fff'; ctx.fillText(l,W/2,y); y+=f.size*1.18; }
+    ctx.shadowColor='transparent';
+  }
+  if(S.sub){
+    const f=fit(S.sub,W-140*u,2,46*u,600,'b'); y+=6*u; ctx.textBaseline='top';
+    ctx.shadowColor='rgba(0,0,0,.7)'; ctx.shadowBlur=10*u;
+    for(const l of f.lines){ ctx.fillStyle=S.template==='service'?'#b9ffcf':'#ffe27a'; ctx.fillText(l,W/2,y); y+=f.size*1.25; }
+    ctx.shadowColor='transparent';
+  }
+  ctx.restore();
+
+  const bottomLimit = S.showBrand ? L.brandY : H - (L.tall?230:40)*u;
+
+  // per-clip caption
+  if(seg && seg.kind==='clip' && seg.clip.caption){
+    const lt=t-seg.start, ca=ease((lt-0.2)/0.5);
+    if(ca>0){ ctx.save(); ctx.globalAlpha=ca;
+      const f=fit(seg.clip.caption,W-200*u,2,50*u,800,'h'); const lh=f.size*1.2; const bh=f.lines.length*lh+34*u;
+      const bw=Math.max(...f.lines.map(l=>ctx.measureText(l).width))+70*u; const by=bottomLimit-bh-30*u-(1-ca)*20*u;
+      ctx.fillStyle='rgba(0,0,0,.66)'; rrect((W-bw)/2,by,bw,bh,22*u); ctx.fill();
+      ctx.fillStyle=T.b==='#d71920'&&S.template!=='offer'?'#fff':'#fff'; ctx.textAlign='center'; ctx.textBaseline='top';
+      f.lines.forEach((l,i)=>ctx.fillText(l,W/2,by+17*u+i*lh)); ctx.restore(); }
+  }
+
+  // price burst
+  if(S.price){
+    const pa=ease((t-0.5)/0.5); if(pa>0){
+      const r=(S.ratio==='9:16'?175:150)*u*pa*(1+0.03*Math.sin(t*5));
+      const cx=W-r-40*u, cy=bottomLimit-r-(seg&&seg.clip&&seg.clip.caption?200:40)*u;
+      ctx.save(); ctx.translate(cx,cy); ctx.rotate(-0.12);
+      ctx.beginPath(); const n=20; for(let i=0;i<n*2;i++){ const rr=i%2?r*0.86:r; const an=i*Math.PI/n; ctx.lineTo(Math.cos(an)*rr,Math.sin(an)*rr);} ctx.closePath();
+      ctx.fillStyle=S.template==='offer'?'#ffd400':T.a; ctx.shadowColor='rgba(0,0,0,.45)'; ctx.shadowBlur=20*u; ctx.fill(); ctx.shadowColor='transparent';
+      ctx.lineWidth=6*u; ctx.strokeStyle='#fff'; ctx.stroke();
+      const ink = (S.template==='offer'||S.template==='festival'||S.template==='simple')?'#b30000':'#fff';
+      ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillStyle=ink;
+      if(S.oldPrice){ ctx.font=font(600,r*0.2,'b'); const ot='₹'+inr(S.oldPrice); ctx.fillText(ot,0,-r*0.42); const ow=ctx.measureText(ot).width; ctx.fillRect(-ow/2,-r*0.42-2*u,ow,5*u); }
+      const pt='₹'+inr(S.price); let ps=r*0.46; ctx.font=font(800,ps,'h'); while(ctx.measureText(pt).width>r*1.5&&ps>10){ps*=0.92; ctx.font=font(800,ps,'h');}
+      ctx.fillText(pt,0,S.oldPrice?r*0.0:-r*0.08);
+      ctx.font=font(800,r*0.17,'b'); ctx.fillText('மட்டும்!',0,r*0.42);
+      ctx.restore(); }
+  }
+
+  if(S.showBrand) brandCard(L,T); else circleImg(logoImg,W-80*u,(L.tall?80:70)*u,56*u);
+}
+
+function brandCard(L,T){
+  const {W,u,brandY,brandH}=L; const x=30*u, w=W-60*u;
+  ctx.save(); ctx.shadowColor='rgba(0,0,0,.35)'; ctx.shadowBlur=24*u; ctx.fillStyle='#fff'; rrect(x,brandY,w,brandH,26*u); ctx.fill(); ctx.restore();
+  ctx.save(); rrect(x,brandY,w,brandH,26*u); ctx.clip(); ctx.fillStyle='#d71920'; ctx.fillRect(x,brandY,w,8*u); ctx.fillStyle='#0a6526'; ctx.fillRect(x+w/2,brandY,w/2,8*u); ctx.restore();
+  const r=58*u; circleImg(logoImg,x+24*u+r,brandY+brandH/2+4*u,r);
+  const tx=x+24*u+2*r+22*u, tw=w-(tx-x)-24*u;
+  ctx.textAlign='left'; ctx.textBaseline='alphabetic';
+  let f=fit(S.brand.name,tw,1,48*u,800,'h'); ctx.fillStyle='#b81419'; ctx.fillText(f.lines[0]||'',tx,brandY+62*u);
+  f=fit('📞 '+S.brand.phone+'  •  WhatsApp',tw,1,34*u,800,'b'); ctx.fillStyle='#0a6526'; ctx.fillText(f.lines[0]||'',tx,brandY+104*u);
+  f=fit('📍 '+S.brand.addr,tw,1,26*u,600,'b'); ctx.fillStyle='#444'; ctx.fillText(f.lines[0]||'',tx,brandY+136*u);
+}
+
+function festivalFrame(T,u,W,H,t){
+  ctx.save(); ctx.strokeStyle=T.a; ctx.lineWidth=12*u; rrect(22*u,22*u,W-44*u,H-44*u,30*u); ctx.stroke();
+  ctx.lineWidth=3*u; rrect(44*u,44*u,W-88*u,H-88*u,22*u); ctx.stroke();
+  ctx.fillStyle=T.a;
+  for(const [cx,cy] of [[44,44],[W/u-44,44],[44,H/u-44],[W/u-44,H/u-44]]){
+    ctx.save(); ctx.translate(cx*u,cy*u); ctx.rotate(Math.PI/4+t*0.6);
+    ctx.fillRect(-20*u,-20*u,40*u,40*u); ctx.restore();
+  }
+  // sparkles
+  for(let i=0;i<14;i++){ const px=(Math.sin(i*91.7)*0.5+0.5)*W, py=((i*0.137+t*0.05)%1)*H; const s=(4+3*Math.sin(t*4+i))*u;
+    ctx.globalAlpha=0.5+0.5*Math.sin(t*3+i); ctx.beginPath(); ctx.arc(px,py,Math.max(1,s),0,Math.PI*2); ctx.fill(); }
+  ctx.restore();
+}
+
+function drawOutro(lt,T){
+  const {W,H,u}=layout();
+  const g=ctx.createRadialGradient(W/2,H*0.35,10,W/2,H*0.4,H*0.8); g.addColorStop(0,S.template==='simple'?'#2b2e33':T.b); g.addColorStop(1,'#050505');
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+  const p=ease(lt/0.6); const r=Math.min(W*0.24,H*0.17)*(0.6+0.4*p);
+  const cy=H*(S.ratio==='9:16'?0.36:0.27);
+  ctx.save(); ctx.globalAlpha=p; ctx.shadowColor='rgba(0,0,0,.6)'; ctx.shadowBlur=40*u; circleImg(logoImg,W/2,cy,r); ctx.restore();
+  let y=cy+r+70*u; const a2=ease((lt-0.3)/0.6);
+  ctx.save(); ctx.globalAlpha=a2; ctx.textAlign='center'; ctx.textBaseline='middle';
+  let f=fit(S.brand.name,W-120*u,1,76*u,800,'h'); ctx.fillStyle='#fff'; ctx.fillText(f.lines[0]||'',W/2,y); y+=f.size*1.05;
+  if(S.outroText){ f=fit(S.outroText,W-120*u,2,56*u,800,'h'); ctx.fillStyle='#ffd54a'; for(const l of f.lines){ ctx.fillText(l,W/2,y); y+=f.size*1.2; } }
+  y+=26*u; ctx.font=font(800,54*u,'b'); const ph='📞 '+S.brand.phone; const pw=ctx.measureText(ph).width+80*u;
+  ctx.fillStyle='#fff'; rrect((W-pw)/2,y-46*u,pw,92*u,46*u); ctx.fill(); ctx.fillStyle='#0a6526'; ctx.fillText(ph,W/2,y+2*u); y+=100*u;
+  f=fit('📍 '+S.brand.addr,W-120*u,2,34*u,600,'b'); ctx.fillStyle='#eee'; for(const l of f.lines){ ctx.fillText(l,W/2,y); y+=f.size*1.3; }
+  if(S.brand.hours){ f=fit('🕘 '+S.brand.hours,W-120*u,1,32*u,600,'b'); ctx.fillStyle='#ccc'; ctx.fillText(f.lines[0],W/2,y+6*u); }
+  ctx.restore();
+}
+
+function draw(t){
+  resize();
+  const tl=timeline(), seg=segAt(tl,t), T=TEMPLATES[S.template]||TEMPLATES.new;
+  const W=cv.width,H=cv.height;
+  ctx.setTransform(1,0,0,1,0,0); ctx.globalAlpha=1; ctx.shadowColor='transparent'; ctx.textAlign='left';
+  if(seg.kind==='outro'){ drawOutro(t-seg.start,T); }
+  else {
+    bgGrad(T);
+    if(seg.kind==='blank'){ ctx.save(); ctx.globalAlpha=0.12; const r=Math.min(W,H)*0.42; circleImg(logoImg,W/2,H*0.55,r); ctx.restore(); }
+    else {
+      const c=seg.clip, lt=t-seg.start, k=lt/seg.len;
+      const idx=clips.indexOf(c), pan=idx%2?1:-1;
+      if(c.type==='image'){ const z=c.motion?1+0.1*k:1; drawMedia(c.small,c.small.width,c.small.height,c.fit,z,pan); }
+      else if(c.el.readyState>=2){ drawMedia(c.el,c.el.videoWidth,c.el.videoHeight,c.fit,1,0); }
+    }
+    drawOverlay(t,seg,T);
+  }
+  // dip-to-black transition at each segment start
+  const lt=t-seg.start;
+  if(seg.start>0 && lt<0.3){ ctx.fillStyle=`rgba(0,0,0,${1-lt/0.3})`; ctx.fillRect(0,0,W,H); }
+  const tail=tl.total-t; if(recording && tail<0.25){ ctx.fillStyle=`rgba(0,0,0,${1-tail/0.25})`; ctx.fillRect(0,0,W,H); }
+}
+
+/* ---------- audio ---------- */
+let AC=null, master=null, recDest=null, musicGain=null;
+function ensureAudio(){
+  if(!AC){ const C=window.AudioContext||window.webkitAudioContext; if(!C) return; AC=new C(); master=AC.createGain(); master.connect(AC.destination);
+    recDest=AC.createMediaStreamDestination(); master.connect(recDest); musicGain=AC.createGain(); musicGain.connect(master); }
+  if(AC.state==='suspended') AC.resume();
+  for(const c of clips) if(c.type==='video' && !c.gain){ try{ const s=AC.createMediaElementSource(c.el); c.gain=AC.createGain(); s.connect(c.gain); c.gain.connect(master);}catch(e){} }
+  if(music && !music.wired){ try{ AC.createMediaElementSource(music.el).connect(musicGain); music.wired=true; }catch(e){} }
+}
+
+/* ---------- playback ---------- */
+let playing=false, recording=false, t=0, t0=0, onEnd=null;
+function syncMedia(tt,live){
+  const tl=timeline(), seg=segAt(tl,tt);
+  for(const s of tl.segs){
+    if(s.kind!=='clip'||s.clip.type!=='video') continue; const v=s.clip.el;
+    if(s===seg){
+      const want=s.clip.trimIn+(tt-s.start);
+      if(live){ if(v.paused){ v.currentTime=want; v.play().catch(()=>{}); } else if(Math.abs(v.currentTime-want)>0.3) v.currentTime=want; }
+      else { if(!v.paused) v.pause(); if(Math.abs(v.currentTime-want)>0.04){ v.currentTime=want; } }
+      if(s.clip.gain) s.clip.gain.gain.value=S.videoVol;
+    } else {
+      if(!v.paused) v.pause();
+      if(live && s.start>tt && s.start-tt<0.8 && Math.abs(v.currentTime-s.clip.trimIn)>0.1) v.currentTime=s.clip.trimIn;
+    }
+  }
+  if(music){
+    const m=music.el;
+    if(live){ if(m.paused){ m.currentTime=m.duration? tt%m.duration:0; m.play().catch(()=>{}); } }
+    else if(!m.paused) m.pause();
+    const fade=clamp((tl.total-tt)/1.2,0,1); if(musicGain) musicGain.gain.value=S.musicVol*fade; else m.volume=S.musicVol*fade;
+  }
+}
+function play(){
+  ensureAudio();
+  const tl=timeline(); if(t>=tl.total-0.05) t=0;
+  t0=performance.now()-t*1000; playing=true; $('#playBtn').textContent='⏸';
+  if(music) music.el.pause();
+  tick();
+}
+function pause(){
+  playing=false; $('#playBtn').textContent='▶';
+  for(const c of clips) if(c.type==='video') c.el.pause();
+  if(music) music.el.pause();
+}
+function tick(){
+  if(!playing) return;
+  const tl=timeline(); t=(performance.now()-t0)/1000;
+  if(t>=tl.total){ t=tl.total-0.001; draw(t); pause(); ui(); if(onEnd){const f=onEnd; onEnd=null; f();} return; }
+  syncMedia(t,true); draw(t); ui();
+  requestAnimationFrame(tick);
+}
+function still(){ if(playing) return; syncMedia(t,false); draw(t); ui(); }
+function redraw(){ if(!playing) still(); }
+function ui(){ const tl=timeline(); $('#seek').value=Math.round(t/tl.total*1000); $('#tm').textContent=`${t.toFixed(1)} / ${tl.total.toFixed(1)}s`; }
+
+/* ---------- media import ---------- */
+let nextId=1;
+async function addFiles(files){
+  for(const f of files){
+    const url=URL.createObjectURL(f);
+    if(f.type.startsWith('video')){
+      const v=document.createElement('video'); v.src=url; v.playsInline=true; v.preload='auto'; v.setAttribute('playsinline','');
+      v.crossOrigin='anonymous';
+      await new Promise(r=>{ v.onloadedmetadata=r; v.onerror=r; });
+      if(!v.duration){ toast('இந்த வீடியோவை திறக்க முடியவில்லை: '+f.name); continue; }
+      const c={id:nextId++,type:'video',el:v,url,name:f.name,srcDur:v.duration,trimIn:0,trimOut:Math.min(v.duration,30),caption:'',fit:'contain'};
+      v.addEventListener('seeked',()=>{ if(!playing) draw(t); });
+      clips.push(c);
+    } else if(f.type.startsWith('image')){
+      const im=new Image(); im.src=url; try{ await im.decode(); }catch(e){ toast('போட்டோ திறக்கவில்லை: '+f.name); continue; }
+      clips.push({id:nextId++,type:'image',el:im,small:shrink(im,1920),url,name:f.name,dur:3,caption:'',fit:'contain',motion:true});
+    }
+  }
+  if(AC) ensureAudio();
+  if(!selId && clips.length) selId=clips[0].id;
+  renderClips(); still();
+}
+
+function renderClips(){
+  const box=$('#clips'); box.innerHTML='';
+  clips.forEach((c,i)=>{
+    const d=document.createElement('div'); d.className='clip'+(c.id===selId?' on':'');
+    if(c.type==='image'){ const im=document.createElement('img'); im.src=c.url; d.append(im); }
+    else { const v=document.createElement('video'); v.src=c.url+'#t=0.5'; v.muted=true; v.playsInline=true; v.preload='metadata'; d.append(v); }
+    const b=document.createElement('b'); b.textContent=(i+1)+(c.type==='video'?' 🎬':''); const s=document.createElement('span');
+    s.textContent=(c.type==='image'?c.dur:(c.trimOut-c.trimIn)).toFixed(1)+'s'; d.append(b,s);
+    d.onclick=()=>{ selId=c.id; const tl=timeline(); const sg=tl.segs.find(x=>x.clip===c); if(sg){ pause(); t=sg.start+0.35; } renderClips(); still(); };
+    box.append(d);
+  });
+  renderEditor();
+}
+
+function renderEditor(){
+  const ed=$('#clipEd'); const c=clips.find(x=>x.id===selId);
+  if(!c){ ed.innerHTML=''; return; }
+  const i=clips.indexOf(c);
+  ed.innerHTML=`<div class="box">
+    <h3>${i+1}. ${c.type==='image'?'📷 போட்டோ':'🎬 வீடியோ'}</h3>
+    ${c.type==='image'
+      ? `<label class="f">எவ்வளவு நேரம் காட்டணும்: <b id="dV">${c.dur.toFixed(1)}s</b></label><input type="range" id="eDur" min="1" max="10" step="0.5" value="${c.dur}">
+         <label class="check"><input type="checkbox" id="eMot" ${c.motion?'checked':''}> மெதுவா zoom ஆகணும்</label>`
+      : `<label class="f">ஆரம்பம்: <b id="iV">${c.trimIn.toFixed(1)}s</b></label><input type="range" id="eIn" min="0" max="${c.srcDur}" step="0.1" value="${c.trimIn}">
+         <label class="f">முடிவு: <b id="oV">${c.trimOut.toFixed(1)}s</b> (மொத்தம் ${c.srcDur.toFixed(1)}s)</label><input type="range" id="eOut" min="0" max="${c.srcDur}" step="0.1" value="${c.trimOut}">`}
+    <label class="f">அமைப்பு</label>
+    <div class="chips"><button class="chip ${c.fit==='contain'?'on':''}" data-fit="contain">முழுசா காட்டு</button><button class="chip ${c.fit==='cover'?'on':''}" data-fit="cover">திரை நிறைய</button></div>
+    <label class="f">இந்த ஷாட்டுக்கு எழுத்து (விருப்பம்)</label>
+    <input type="text" id="eCap" placeholder="உதா: Hero Sprint 26T — ₹6,499" value="">
+    <div class="btns">
+      <button class="btn" id="eL">◀ முன்னே</button><button class="btn" id="eR">பின்னே ▶</button>
+      <button class="btn" id="eDup">⧉ நகல்</button><button class="btn red" id="eDel">🗑 நீக்கு</button>
+    </div></div>`;
+  $('#eCap').value=c.caption;
+  $('#eCap').oninput=e=>{ c.caption=e.target.value; still(); };
+  ed.querySelectorAll('[data-fit]').forEach(b=>b.onclick=()=>{ c.fit=b.dataset.fit; renderEditor(); still(); });
+  if(c.type==='image'){
+    $('#eDur').oninput=e=>{ c.dur=+e.target.value; $('#dV').textContent=c.dur.toFixed(1)+'s'; renderClipsLabels(); still(); };
+    $('#eMot').onchange=e=>{ c.motion=e.target.checked; still(); };
+  } else {
+    const sg=()=>timeline().segs.find(x=>x.clip===c);
+    $('#eIn').oninput=e=>{ c.trimIn=Math.min(+e.target.value,c.trimOut-0.3); e.target.value=c.trimIn; $('#iV').textContent=c.trimIn.toFixed(1)+'s'; pause(); t=sg().start; renderClipsLabels(); still(); };
+    $('#eOut').oninput=e=>{ c.trimOut=Math.max(+e.target.value,c.trimIn+0.3); e.target.value=c.trimOut; $('#oV').textContent=c.trimOut.toFixed(1)+'s'; pause(); const s=sg(); t=s.start+s.len-0.05; renderClipsLabels(); still(); };
+  }
+  $('#eL').onclick=()=>{ if(i>0){ [clips[i-1],clips[i]]=[clips[i],clips[i-1]]; renderClips(); still(); } };
+  $('#eR').onclick=()=>{ if(i<clips.length-1){ [clips[i+1],clips[i]]=[clips[i],clips[i+1]]; renderClips(); still(); } };
+  $('#eDup').onclick=()=>{
+    if(c.type==='video'){ toast('வீடியோவை மறுபடி சேர்த்தா நகல் ஆகும்'); return; }
+    const n={...c,id:nextId++}; clips.splice(i+1,0,n); selId=n.id; renderClips(); still(); };
+  $('#eDel').onclick=()=>{ clips.splice(i,1); if(c.type==='video') c.el.pause(); selId=clips[Math.min(i,clips.length-1)]?.id||null; t=0; renderClips(); still(); };
+}
+function renderClipsLabels(){ document.querySelectorAll('#clips .clip span').forEach((s,i)=>{ const c=clips[i]; s.textContent=(c.type==='image'?c.dur:(c.trimOut-c.trimIn)).toFixed(1)+'s'; }); ui(); }
+
+/* ---------- export ---------- */
+function pickMime(){
+  if(!window.MediaRecorder) return null;
+  const list=['video/mp4;codecs=avc1.640028,mp4a.40.2','video/mp4;codecs=avc1.42E01E,mp4a.40.2','video/mp4;codecs=avc1,mp4a.40.2','video/mp4','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'];
+  return list.find(m=>{ try{return MediaRecorder.isTypeSupported(m);}catch(e){return false;} }) || '';
+}
+function fname(ext){ const d=new Date(); const p=n=>String(n).padStart(2,'0'); return `MM-Bicycle-World-${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}.${ext}`; }
+function captionText(){
+  const lines=[S.headline, S.sub];
+  if(S.price) lines.push(`🏷️ விலை: ₹${inr(S.price)}${S.oldPrice?` (பழைய விலை ₹${inr(S.oldPrice)})`:''}`);
+  lines.push('', `📍 ${S.brand.name}, ${S.brand.addr}`, `📞 ${S.brand.phone} (Call / WhatsApp)`, S.brand.hours?`🕘 ${S.brand.hours}`:'', '',
+    '#MMBicycleWorld #Thirubuvanai #Puducherry #Pondicherry #BicycleShop #Cycle #Cycling #Bicycle #சைக்கிள்');
+  return lines.filter((l,i,a)=>l!==undefined && !(l===''&&a[i-1]==='')).join('\n').trim();
+}
+
+function showResult(blob, kind, ext, note){
+  const url=URL.createObjectURL(blob); const name=fname(ext);
+  const file=new File([blob],name,{type:blob.type});
+  const canShare=!!(navigator.canShare && navigator.canShare({files:[file]}));
+  $('#sheet').innerHTML=`<h3>✅ ரெடி!</h3>
+    ${kind==='video'?`<video src="${url}" controls playsinline></video>`:`<img src="${url}" alt="">`}
+    ${note?`<div class="warn">${note}</div>`:''}
+    <div class="btns">
+      <a class="btn green" href="${url}" download="${name}">⬇️ போனில் சேமி</a>
+      ${canShare?'<button class="btn red" id="shareBtn">📤 WhatsApp / Insta-க்கு அனுப்பு</button>':''}
+      <button class="btn" id="closeBtn">✕ மூடு</button>
+    </div>
+    <label class="f">போஸ்ட் கேப்ஷன் (காப்பி பண்ணி போடுங்க)</label>
+    <textarea id="capTxt" rows="7">${captionText().replace(/</g,'&lt;')}</textarea>
+    <div class="btns"><button class="btn" id="copyBtn">📋 கேப்ஷன் காப்பி</button></div>`;
+  $('#modal').classList.add('on');
+  $('#closeBtn').onclick=()=>$('#modal').classList.remove('on');
+  $('#copyBtn').onclick=async()=>{ const v=$('#capTxt').value; try{ await navigator.clipboard.writeText(v); toast('கேப்ஷன் காப்பி ஆச்சு ✅'); }catch(e){ $('#capTxt').select(); document.execCommand('copy'); toast('கேப்ஷன் காப்பி ஆச்சு ✅'); } };
+  if(canShare) $('#shareBtn').onclick=async()=>{ try{ await navigator.share({files:[file], text:$('#capTxt').value}); }catch(e){} };
+}
+
+$('#expPng').onclick=()=>{
+  pause(); still();
+  setTimeout(()=>cv.toBlob(b=>{ if(b) showResult(b,'image','png'); else toast('சேமிக்க முடியவில்லை'); },'image/png'),80);
+};
+
+$('#expVid').onclick=async()=>{
+  const mime=pickMime();
+  if(mime===null || !cv.captureStream){ toast('இந்த browser-ல வீடியோ சேமிக்க முடியாது. Chrome-ல திறங்க.',4000); return; }
+  pause(); ensureAudio(); t=0; still();
+  await new Promise(r=>setTimeout(r,350));
+  const stream=cv.captureStream(30);
+  if(recDest) recDest.stream.getAudioTracks().forEach(tr=>stream.addTrack(tr));
+  let rec; try{ rec=new MediaRecorder(stream, mime?{mimeType:mime, videoBitsPerSecond:S.quality>=1080?8e6:5e6}:{}); }catch(e){ toast('ரெக்கார்டர் தொடங்கவில்லை: '+e.message,4000); return; }
+  const chunks=[]; rec.ondataavailable=e=>{ if(e.data&&e.data.size) chunks.push(e.data); };
+  const total=timeline().total;
+  $('#sheet').innerHTML=`<h3>🎬 வீடியோ தயாராகுது…</h3><p class="hint">வீடியோ முடியும் வரை (${total.toFixed(0)} வினாடி) இந்த ஸ்க்ரீனை விட்டு போகாதீங்க, போனை லாக் பண்ணாதீங்க.</p><div class="prog"><div id="pg"></div></div><div class="btns"><button class="btn" id="cancelRec">✕ நிறுத்து</button></div>`;
+  $('#modal').classList.add('on');
+  let cancelled=false;
+  $('#cancelRec').onclick=()=>{ cancelled=true; pause(); recording=false; try{rec.stop();}catch(e){} $('#modal').classList.remove('on'); };
+  const pgT=setInterval(()=>{ const p=$('#pg'); if(p) p.style.width=(t/total*100).toFixed(0)+'%'; },200);
+  rec.onstop=()=>{
+    clearInterval(pgT); recording=false; stream.getVideoTracks().forEach(tr=>tr.stop());
+    if(cancelled) return;
+    const type=(rec.mimeType||mime||'video/webm').split(';')[0]; const blob=new Blob(chunks,{type});
+    const isMp4=type.includes('mp4');
+    const h264=/avc1/.test(rec.mimeType||mime||'');
+    showResult(blob,'video',isMp4?'mp4':'webm', isMp4?(h264?'':'ℹ️ இந்த போன் MP4-ல் வேறு codec பயன்படுத்துது. WhatsApp/Instagram ஏத்துக்கலைன்னா Chrome-ஐ அப்டேட் பண்ணுங்க.'):'⚠️ இந்த browser MP4 தரவில்லை (WebM வந்திருக்கு). WhatsApp/Instagram-க்கு MP4 வேணும்னா Chrome-ஐ அப்டேட் பண்ணிட்டு மறுபடி சேமிங்க.');
+  };
+  recording=true; rec.start(500);
+  onEnd=()=>{ setTimeout(()=>{ try{rec.stop();}catch(e){} },150); };
+  play();
+};
+
+/* ---------- UI wiring ---------- */
+function bindText(id,key,obj=S){ const el=$('#'+id); el.value=obj[key]; el.oninput=()=>{ obj[key]=el.value; save(); redraw(); }; }
+function bindCheck(id,key){ const el=$('#'+id); el.checked=S[key]; el.onchange=()=>{ S[key]=el.checked; save(); if(t>timeline().total) t=0; redraw(); }; }
+bindText('headline','headline'); bindText('sub','sub'); bindText('price','price'); bindText('oldPrice','oldPrice'); bindText('outroText','outroText');
+bindCheck('showBrand','showBrand'); bindCheck('showOutro','showOutro');
+bindText('bName','name',S.brand); bindText('bPhone','phone',S.brand); bindText('bAddr','addr',S.brand); bindText('bHours','hours',S.brand);
+$('#quality').value=String(S.quality); $('#quality').onchange=e=>{ S.quality=+e.target.value; save(); redraw(); };
+$('#musicVol').value=S.musicVol; $('#musicVol').oninput=e=>{ S.musicVol=+e.target.value; save(); if(musicGain) musicGain.gain.value=S.musicVol; };
+$('#videoVol').value=S.videoVol; $('#videoVol').oninput=e=>{ S.videoVol=+e.target.value; save(); for(const c of clips) if(c.gain) c.gain.gain.value=S.videoVol; };
+
+function renderRatios(){ document.querySelectorAll('#ratios .chip').forEach(b=>{ b.classList.toggle('on',b.dataset.r===S.ratio); b.onclick=()=>{ S.ratio=b.dataset.r; save(); renderRatios(); redraw(); }; }); }
+renderRatios();
+function renderTpls(){
+  const box=$('#tpls'); box.innerHTML='';
+  for(const [k,T] of Object.entries(TEMPLATES)){ const d=document.createElement('div'); d.className='tpl'+(k===S.template?' on':''); d.innerHTML=`<i>${T.icon}</i>${T.name}`;
+    d.onclick=()=>{ S.template=k; save(); renderTpls(); redraw(); }; box.append(d); }
+}
+renderTpls();
+QUICK.forEach(q=>{ const b=document.createElement('button'); b.className='chip'; b.textContent=q; b.onclick=()=>{ S.headline=q; $('#headline').value=q; save(); redraw(); }; $('#quick').append(b); });
+
+document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id==='p-'+b.dataset.p));
+});
+
+$('#fileIn').onchange=e=>{ addFiles([...e.target.files]); e.target.value=''; };
+$('#musicIn').onchange=e=>{
+  const f=e.target.files[0]; e.target.value=''; if(!f) return;
+  if(music){ music.el.pause(); }
+  const el=new Audio(); el.src=URL.createObjectURL(f); el.loop=true; el.preload='auto';
+  music={el,name:f.name,wired:false}; $('#musicName').textContent='🎵 '+f.name; if(AC) ensureAudio(); toast('இசை சேர்ந்தாச்சு ✅');
+};
+$('#musicDel').onclick=()=>{ if(music){ music.el.pause(); if(musicGain) musicGain.gain.value=0; } music=null; $('#musicName').textContent='இசை எதுவும் சேர்க்கவில்லை.'; };
+$('#logoIn').onchange=e=>{
+  const f=e.target.files[0]; e.target.value=''; if(!f) return;
+  const im=new Image(); im.onload=()=>{ const c=shrink(im,400); const d=c.toDataURL('image/png'); S.brand.logo=d; save(); setLogo(d); toast('லோகோ மாறிடுச்சு ✅'); }; im.src=URL.createObjectURL(f);
+};
+$('#logoReset').onclick=()=>{ S.brand.logo='logo.png'; save(); setLogo('logo.png'); };
+
+$('#playBtn').onclick=()=>{ playing?pause():play(); };
+$('#seek').oninput=e=>{ pause(); t=+e.target.value/1000*timeline().total; still(); };
+$('#modal').onclick=e=>{ if(e.target.id==='modal' && !recording) $('#modal').classList.remove('on'); };
+
+/* install as an app */
+let deferred=null;
+window.addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); deferred=e; $('#installBtn').style.display='block'; });
+$('#installBtn').onclick=async()=>{ if(!deferred) return; deferred.prompt(); await deferred.userChoice.catch(()=>{}); deferred=null; $('#installBtn').style.display='none'; };
+if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(()=>{});
+
+/* first paint once fonts are ready */
+still();
+if(document.fonts){ Promise.all([document.fonts.load('800 40px "Anek Tamil"','தமிழ் Aa'),document.fonts.load('600 30px "Mukta Malar"','தமிழ் Aa'),document.fonts.load('800 30px "Mukta Malar"','தமிழ் Aa')]).then(()=>still()).catch(()=>{}); }
+window.__mm={S,clips,draw,timeline,addFiles,get t(){return t}};
+})();
+</script>
+</body>
+</html>
